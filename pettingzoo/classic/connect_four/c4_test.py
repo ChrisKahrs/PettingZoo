@@ -5,10 +5,16 @@ import random
 env = connect_four_v3.env(render_mode="human")
 # render_test(env)
 
-def print_board(obs):
+def print_board(obs, agent):
     for i in range(6):
         for x in range(7):
-            print(str(obs["observation"][i][x]), end=" ")
+            if obs["observation"][i][x][0] == 0 and obs["observation"][i][x][1] == 0:
+                chip = "_"
+            elif obs["observation"][i][x][0] == 0:
+                chip ="R"
+            else: chip = "B"
+            # print(str(obs["observation"][i][x]), end=" ")
+            print(chip, end=" ")
         print(" ")
 
 env.reset()
@@ -16,13 +22,14 @@ for agent in env.agent_iter(100):
     env.render()
     obs, reward, done, done2, info = env.last()
     if done:
-        print_board(obs)
+        print("mask ",str(obs["action_mask"]), " agent ", agent)
+        print_board(obs, agent)
         print("done", done, "done2", done2, "info", info, "reward", reward, "agent", agent)
         env.reset()
         break
-    print("mask ",str(obs["action_mask"]), " agent ", agent)
-    print_board(obs)
-    action = random.randint(0,6)
+    # print("mask ",str(obs["action_mask"]), " agent ", agent)
+    # print_board(obs)
+    action = random.randint(0,6) # get legal random action
     env.step(action)
 input("Press Enter to continue...")
 env.close()
