@@ -24,14 +24,19 @@ for agent in env.agent_iter(100):
     if done:
         print("mask ",str(obs["action_mask"]), " agent ", agent)
         print_board(obs, agent)
-        print("done", done, "done2", done2, "info", info, "reward", reward, "agent", agent)
+        print("done", done, "done2", done2, "info", info, "reward", reward)
         env.reset()
         break
     # print("mask ",str(obs["action_mask"]), " agent ", agent)
     # print_board(obs)
     action = random.randint(0,6) # get legal random action
-    env.step(action)
-input("Press Enter to continue...")
+    mask = obs["action_mask"]
+    possible_actions = [i for i in range(len(mask)) if mask[i]==1]
+    print("possible_actions", possible_actions)
+    my_choice = random.randint(0,len(possible_actions)-1)
+    print("my_choice", my_choice)
+    env.step(possible_actions[my_choice]) # find which is the lowest legal action, or if anything wins?
+# input("Press Enter to continue...")
 env.close()
 
 
